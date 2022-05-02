@@ -867,18 +867,10 @@ final class DiffusionServeController extends DiffusionController {
   }
 
   private function getMercurialArguments() {
-    // Mercurial sends arguments in HTTP headers. "Why?", you might wonder,
-    // "Why would you do this?".
+    // To log the server variables:
+    // error_log("_SERVER=" . print_r($_SERVER, true));
 
-    $args_raw = array();
-    for ($ii = 1;; $ii++) {
-      $header = 'HTTP_X_HGARG_'.$ii;
-      if (!array_key_exists($header, $_SERVER)) {
-        break;
-      }
-      $args_raw[] = $_SERVER[$header];
-    }
-    $args_raw = implode('', $args_raw);
+    $args_raw = $_SERVER["QUERY_STRING"];
 
     return id(new PhutilQueryStringParser())
       ->parseQueryString($args_raw);
